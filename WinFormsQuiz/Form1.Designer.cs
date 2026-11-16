@@ -39,10 +39,9 @@
             // 
             // btnRestart
             // 
-            btnRestart.Location = new Point(727, 324);
-            btnRestart.Margin = new Padding(4, 4, 4, 4);
+            btnRestart.Location = new Point(529, 270);
             btnRestart.Name = "btnRestart";
-            btnRestart.Size = new Size(129, 35);
+            btnRestart.Size = new Size(94, 29);
             btnRestart.TabIndex = 4;
             btnRestart.Text = "Restart";
             btnRestart.UseVisualStyleBackColor = true;
@@ -50,10 +49,9 @@
             // 
             // btnSubmit
             // 
-            btnSubmit.Location = new Point(391, 324);
-            btnSubmit.Margin = new Padding(4, 4, 4, 4);
+            btnSubmit.Location = new Point(413, 270);
             btnSubmit.Name = "btnSubmit";
-            btnSubmit.Size = new Size(129, 35);
+            btnSubmit.Size = new Size(94, 29);
             btnSubmit.TabIndex = 0;
             btnSubmit.Text = "Submit";
             btnSubmit.UseVisualStyleBackColor = true;
@@ -63,36 +61,33 @@
             // 
             lblMessage.AutoSize = true;
             lblMessage.Font = new Font("Segoe UI", 16F);
-            lblMessage.Location = new Point(412, 73);
-            lblMessage.Margin = new Padding(4, 0, 4, 0);
+            lblMessage.Location = new Point(300, 61);
             lblMessage.Name = "lblMessage";
-            lblMessage.Size = new Size(368, 45);
+            lblMessage.Size = new Size(308, 37);
             lblMessage.TabIndex = 1;
             lblMessage.Text = "Enter your answer below";
             // 
             // lblQuestion
             // 
             lblQuestion.AutoSize = true;
-            lblQuestion.Location = new Point(109, 182);
-            lblQuestion.Margin = new Padding(4, 0, 4, 0);
+            lblQuestion.Location = new Point(79, 152);
             lblQuestion.Name = "lblQuestion";
-            lblQuestion.Size = new Size(251, 24);
+            lblQuestion.Size = new Size(194, 20);
             lblQuestion.TabIndex = 2;
             lblQuestion.Text = "What's the capital of Japan?";
             // 
             // txtAnswer
             // 
-            txtAnswer.Location = new Point(647, 182);
-            txtAnswer.Margin = new Padding(4, 4, 4, 4);
+            txtAnswer.Location = new Point(527, 152);
             txtAnswer.Name = "txtAnswer";
-            txtAnswer.Size = new Size(606, 30);
+            txtAnswer.Size = new Size(442, 27);
             txtAnswer.TabIndex = 3;
             // 
             // btnToggleTheme
             // 
-            btnToggleTheme.Location = new Point(1094, 658);
+            btnToggleTheme.Location = new Point(646, 270);
             btnToggleTheme.Name = "btnToggleTheme";
-            btnToggleTheme.Size = new Size(208, 34);
+            btnToggleTheme.Size = new Size(116, 29);
             btnToggleTheme.TabIndex = 5;
             btnToggleTheme.Text = "Toggle Theme";
             btnToggleTheme.UseVisualStyleBackColor = true;
@@ -100,16 +95,15 @@
             // 
             // Form1
             // 
-            AutoScaleDimensions = new SizeF(11F, 24F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1431, 743);
+            ClientSize = new Size(1041, 619);
             Controls.Add(btnToggleTheme);
             Controls.Add(btnRestart);
             Controls.Add(txtAnswer);
             Controls.Add(lblQuestion);
             Controls.Add(lblMessage);
             Controls.Add(btnSubmit);
-            Margin = new Padding(4, 4, 4, 4);
             Name = "Form1";
             Text = "Form1";
             ResumeLayout(false);
