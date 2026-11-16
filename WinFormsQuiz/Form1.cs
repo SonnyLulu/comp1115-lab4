@@ -131,7 +131,7 @@ namespace WinFormsQuiz
                 ShowFeedback("Incorrect", Color.Red);
             }
 
-            // increment current question 
+            // increment current question.
             currentQuestion++;
 
             // are there more questions?
