@@ -10,7 +10,7 @@ namespace WinFormsQuiz
 
         // track correct answers
         int correct = 0;
-
+        int questionCount = 0;
         bool isDark = false;
 
         // startup method that runs automatically when this form loads
@@ -20,6 +20,7 @@ namespace WinFormsQuiz
 
             // call new LoadQuestions() method to populate quiz data
             LoadQuestions();
+            ResetToStart();
         }
 
         /// <summary>
@@ -29,8 +30,8 @@ namespace WinFormsQuiz
         private void LoadQuestions()
         {
             // populate array
-            questions[0, 0] = "What's the capital of Japan?";
-            questions[0, 1] = "Tokyo";
+            questions[0, 0] = "What's 5 times 3?";
+            questions[0, 1] = "15";
             questions[1, 0] = "What colour is the sky?";
             questions[1, 1] = "Blue";
             questions[2, 0] = "Which came first, the chicken or the egg?";
@@ -51,6 +52,20 @@ namespace WinFormsQuiz
         /// </summary>
         /// <param name="text">feedback to show on label</param>
         /// <param name="colour">text color for feedback label</param>
+        private void ResetToStart()
+        {
+            currentQuestion = 0;
+            correct = 0;
+            questionCount = 0;
+            btnSubmit.Enabled = false;
+            txtAnswer.Enabled = false;
+            txtAnswer.Text = "";
+            txtQuestionCount.Text = "";
+            lblQuestion.Text = $"Choose 1 to {questions.GetLength(0)} questions, then press the Start quiz";
+            ShowFeedback("", Color.Black);
+
+        }
+      
         private void ShowFeedback(string text, Color colour)
         {
             lblMessage.Text = text;
@@ -71,7 +86,7 @@ namespace WinFormsQuiz
             }
             else
             {
-                return correct * 100/ total;
+                return correct * 100 / total;
             }
         }
         /// <summary>
@@ -81,19 +96,19 @@ namespace WinFormsQuiz
         /// <returns>A, B, C , D or F</returns>
         private string GetGrade(int percent)
         {
-           if(percent >=90)
+            if (percent >= 90)
             {
                 return "A";
             }
-           else if(percent >= 80)
+            else if (percent >= 80)
             {
                 return "B";
             }
-           else if(percent >= 70)
+            else if (percent >= 70)
             {
                 return "C";
             }
-           else if( percent >= 60)
+            else if (percent >= 60)
             {
                 return "D";
             }
@@ -107,7 +122,7 @@ namespace WinFormsQuiz
         /// </summary>
         private void FinishQuiz()
         {
-            int percent = GetPercentScore(correct, questions.GetLength(0));
+            int percent = GetPercentScore(correct, questionCount);
             string grade = GetGrade(percent);
 
             btnSubmit.Enabled = false;
@@ -116,38 +131,60 @@ namespace WinFormsQuiz
 
         private void btnSubmit_Click(object sender, EventArgs e)
         {
+            try
+            {
+                // testing 1st question only - convert answer to an int
+                //int answer = int.Parse(txtAnswer.Text);
+
+                // if user has entered correct answer in the textbox
+                if (txtAnswer.Text == questions[currentQuestion, 1])
+                {
+                    ShowFeedback("Correct", Color.Green);
+
+                    // add 1 to correct answer count
+                    correct++;
+                }
+                else
+                {
+                    // wrong answer
+                    ShowFeedback("Incorrect", Color.Red);
+                }
+
+                // increment current question.
+                currentQuestion++;
+
+                // are there more questions?
+                if (currentQuestion < questionCount)
+                {
+                    //  move to next question                
+                    lblQuestion.Text = questions[currentQuestion, 0];
+                }
+                else
+                {
+                    // user is done - no more questions
+                    FinishQuiz();
+                }
+                // clear last answer
+                txtAnswer.Text = "";
+
+            }
+            catch (FormatException)
+            {
+                ShowFeedback("Enter a whole number", Color.Red);
+                txtAnswer.Focus();
+            }
+            catch (OverflowException)
+            {
+                ShowFeedback("That number is too large", Color.Red);
+                txtAnswer.Focus();
+
+            }
+
+            return; //stop here
+
             // MessageBox.Show("You clicked me");
-            // if user has entered correct answer in the textbox
-            if (txtAnswer.Text == questions[currentQuestion, 1])
-            {
-                ShowFeedback("Correct", Color.Green);
 
-                // add 1 to correct answer count
-                correct++;
-            }
-            else
-            {
-                // wrong answer
-                ShowFeedback("Incorrect", Color.Red);
-            }
 
-            // increment current question.
-            currentQuestion++;
-
-            // are there more questions?
-            if (currentQuestion < questions.GetLength(0))
-            {
-                //  move to next question                
-                lblQuestion.Text = questions[currentQuestion, 0];
-            }
-            else
-            {
-                // user is done - no more questions
-                FinishQuiz();
-            }
-
-            // clear last answer
-            txtAnswer.Text = "";
         }
 
         private void btnRestart_Click(object sender, EventArgs e)
@@ -158,6 +195,7 @@ namespace WinFormsQuiz
             lblMessage.ForeColor = Color.Black;
             lblQuestion.Text = questions[0, 0];
             btnSubmit.Enabled = true;
+            ResetToStart();
         }
 
         private void btnToggleTheme_Click(object sender, EventArgs e)
@@ -189,5 +227,50 @@ namespace WinFormsQuiz
                 }
             }
         }
-    }
+
+        private void btnSetTimeLimit_Click(object sender, EventArgs e)
+        {
+            // use int.TryParse to TRY converting value to an int without crashing
+            // if text input is a valid number, store it in timeLimit var
+            // TryParse returns true if value is a number, false if it is not a number
+            if (int.TryParse(txtTimeLimit.Text, out int timeLimit) == true)
+            {
+                lblTimeLimit.Text = $"Time Limit: {timeLimit}";
+                // remove any error message
+                ShowFeedback("", Color.Black);
+            }
+            else
+            {
+                ShowFeedback("Invalid Time Limit", Color.Red);
+                txtTimeLimit.Focus();
+            }
+        }
+        /// <summary>
+        /// validate the requested question count and start the quiz
+        /// </summary>
+        
+        private void btnStartQuiz_Click(object sender, EventArgs e)
+        {
+            if (int.TryParse(txtQuestionCount.Text, out int count) == false)
+            {
+                ShowFeedback("Enter a whole number", Color.Red);
+                txtQuestionCount.Focus();
+            }
+            if(count <1 || count > questions.GetLength(0)) 
+            {
+                ShowFeedback($"Enter a number between 1 and{questions.GetLength(0)}" , Color.Red);
+                txtTimeLimit.Focus();
+                return;
+            }
+            questionCount = count;
+            currentQuestion = 0;
+            correct = 0;
+            btnSubmit.Enabled = true;
+            txtAnswer.Enabled = true;
+            txtAnswer.Text = "";
+            lblQuestion.Text = questions[0, 0];
+            ShowFeedback("", Color.Black);
+            txtAnswer.Focus();
+        }
+    }   
 }
